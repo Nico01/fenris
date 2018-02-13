@@ -42,18 +42,18 @@ int    inited;
 struct changed CH;
 unsigned int wantthis;
 
-inline void disassemble_init(void){
+void disassemble_init(void){
     ext_arch.options = 0;
     inited=1;
     ext_arch_init( &ext_arch );
 }
 
-inline  char * get_reg_name(int index) {
+char * get_reg_name(int index) {
     if (index >= ext_arch.sz_regtable) return 0;
     return ext_arch.reg_table[index].mnemonic;
 }
 
-inline  void parse_addrexp(struct addr_exp *e){
+void parse_addrexp(struct addr_exp *e){
 
     CH.sc=e->scale;
 
@@ -69,7 +69,7 @@ inline  void parse_addrexp(struct addr_exp *e){
 
 }
 
-inline  void handle_op(int op, int type){
+void handle_op(int op, int type){
 
     if (!(type & wantthis)) return;
 

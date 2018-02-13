@@ -847,7 +847,7 @@ instr tbl_FF[] = {
 };
 
 /* Init routine : used to set internal disassembler values */
-inline void ext_arch_init( void *param) {
+void ext_arch_init( void *param) {
     settings = (struct EXT__ARCH *)param;
 
     if (! settings) return;
@@ -880,7 +880,7 @@ inline void ext_arch_init( void *param) {
 }
 
 /* Register Table Setup */
-inline void InitRegTable( void ) {
+void InitRegTable( void ) {
     int x;
 
     settings->sz_regtable = 86;
@@ -912,7 +912,7 @@ inline void InitRegTable( void ) {
     return;
 }
 
-inline void ext_arch_cleanup( void ) {
+void ext_arch_cleanup( void ) {
     if (settings->reg_table) free(settings->reg_table);
     if (settings->sz_regtable) settings->sz_regtable = 0;
     if (settings->reg_storage) free(settings->reg_storage);
@@ -923,7 +923,7 @@ inline void ext_arch_cleanup( void ) {
 /* These are used to pass information about the platform to the higher-level
  * disassembler  -- there will probably be more added when additional CPUs
  * are supported */
-inline int get_prologue(struct code **table){
+int get_prologue(struct code **table){
     /* This function and the following are kind of tricky. They fill 'table'
      * with an array of CODE structs; within the array, each 'prologue' is
      * represented by a series of CODE structs followed by a NULL code struct.
@@ -953,7 +953,7 @@ inline int get_prologue(struct code **table){
     return(num);
 }
 
-inline int get_epilogue(struct code **table){
+int get_epilogue(struct code **table){
     struct code *t;
     int num = 3;
     // int i, j;
@@ -972,7 +972,7 @@ inline int get_epilogue(struct code **table){
     return(num);
 }
 /* get the effects on registers of a specified instruction */
-inline int gen_reg_effect( char *mnemonic, struct code_effect *e){
+int gen_reg_effect( char *mnemonic, struct code_effect *e){
     /* the mnemonic is used to determine the effects of instructions
      * which are predetermined, e.g. a call or a push affecting the
      * stack pointer. All effects dependent on operands are managed
@@ -994,13 +994,13 @@ inline int gen_reg_effect( char *mnemonic, struct code_effect *e){
 }
 
 /* generate intermediate code for a function */
-inline int gen_int( int func_id __attribute__((unused))) {
+int gen_int( int func_id __attribute__((unused))) {
     return(1);
 }
 
 /* ------------ Disassembly Routines ----------------------------------- */
 
-inline int GetSizedOperand( int *op, const BYTE *buf, int size) {
+int GetSizedOperand( int *op, const BYTE *buf, int size) {
     /* Copy 'size' bytes from *buf to *op
      * return number of bytes copied */
     /* TODO: call bastard functions for endian-independence */
@@ -1023,7 +1023,7 @@ inline int GetSizedOperand( int *op, const BYTE *buf, int size) {
     return(size);
 }
 
-inline int DecodeByte(BYTE b, struct modRM_byte *modrm){
+int DecodeByte(BYTE b, struct modRM_byte *modrm){
     /* generic bitfield-packing routine */
 
     modrm->mod = b >> 6;             /* top 2 bits */
@@ -1033,7 +1033,7 @@ inline int DecodeByte(BYTE b, struct modRM_byte *modrm){
     return(0);
 }
 
-inline int DecodeSIB(const BYTE *b) {
+int DecodeSIB(const BYTE *b) {
     /* set Address Expression fields (scale, index, base, disp)
      * according to the contents of the SIB byte.
      *  b points to the SIB byte in the instruction-stream buffer; the
@@ -1081,7 +1081,7 @@ inline int DecodeSIB(const BYTE *b) {
    Don't forget to flag string (*SB, *SW) instructions
  */
 /* returns number of bytes it decoded */
-inline int DecodeModRM(const BYTE *b, int *op, int *op_flags, int reg_type,
+int DecodeModRM(const BYTE *b, int *op, int *op_flags, int reg_type,
         int size, int flags){
     /* create address expression and/or fill operand based on value of
      * ModR/M byte. Calls DecodeSIB as appropriate.
@@ -1184,7 +1184,7 @@ inline int DecodeModRM(const BYTE *b, int *op, int *op_flags, int reg_type,
     return(count);       /* number of bytes found in instruction */
 }
 
-inline void apply_seg(unsigned int prefix, int *dest_flg){
+void apply_seg(unsigned int prefix, int *dest_flg){
     unsigned int seg = prefix & 0xF0000000;
 
     if ( seg == PREFIX_CS) *dest_flg |= OP_CODESEG;
@@ -1197,7 +1197,7 @@ inline void apply_seg(unsigned int prefix, int *dest_flg){
     return;
 }
 
-inline int InstDecode( instr *t, const BYTE *buf, struct code *c, DWORD rva __attribute__((unused))){
+int InstDecode( instr *t, const BYTE *buf, struct code *c, DWORD rva __attribute__((unused))){
 
     /* Decode the operands of an instruction; calls DecodeModRM as
         * necessary, gets displacemnets and immeidate values, and sets the
