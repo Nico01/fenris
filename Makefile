@@ -20,7 +20,7 @@
 #  along with this program; if not, write to the Free Software
 #  Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
-CC=gcc
+CC=clang
 
 PROGNAMES=fenris ragnarok fprints dress aegir nc-aegir
 TOOLNAMES=getfprints fenris-bug ragsplit splitter.pl
@@ -38,7 +38,7 @@ CFLAGS+=-DBUILD='"$(BUILD)"' -DVERSION='"$(VERSION)"'
 #
 # always want these
 CFLAGS+=-Wall -Wextra -Wunused
-CFLAGS+=-Werror
+#CFLAGS+=-Werror
 CFLAGS+=-Wunused-macros
 #
 # some optimizations?

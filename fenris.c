@@ -3722,7 +3722,7 @@ void ret_syscall(void)
                 indent(0);
 
             get_mem_from_child(current->pr.rcx, (char *)&a[0], sizeof(a));
-            if (((a[0] >> 16) == 0xffff) || ((a[6] >> 16) == 0xffff)) {
+            if (((a[0] >> 16) == 0xffff) || ((a[5] >> 16) == 0xffff)) { //FIXME: was a[6], why?
 
                 if (current->nest >= 0)
                     debug("%sSYS socketcall_%d (0x%x <invalid>) = %s\n",
@@ -3825,7 +3825,7 @@ void ret_syscall(void)
                     if (AS_USHORT(b3[0]) == PF_UNIX) {
                         sprintf(buf, " [local \"%s\"]", &b3[2]);
                     } else {
-                        if (r.rax == -EINVAL)
+                        if (r.rax == -EINVAL) {
                             strcpy(buf, " [?]");
                         } else {
                             sprintf(buf, " [%d.%d.%d.%d:%d]", b3[4], b3[5], b3[6], b3[7], b3[2] * 256 + b3[3]);
